@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BackboneJS - Events</title>
+</head>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="http://backbonejs.org/backbone-min.js"></script>
+<script>
+  // Your code goes here
+  // Events are basic inversion of control. Instead of calling a method directly, an event is triggered, to which 
+  // other functions are registered as handlers. The part of application that has to know how to call the other part of the application
+  // is inverted.
+  
+  Backbone.on("event", function() { console.log("Handle backbone event"); });
+  Backbone.trigger("event");
+  
+  console.log("-------------------- Backbone.Events gives any object ability bind and trigger custom events --------------------------");
+  
+  // Backbone.Events provides a system similar to Publish/Subscribe mechanism.
+  // Where in Publish is similar to 'trigger' and Subscribe is similar to 'on'.
+  
+  var ourObject = {};
+  
+  // Mixin
+  _.extend(ourObject, Backbone.Events);
+  
+  ourObject.on('dance', function(msg) {
+	console.log('We triggered ' + msg);
+  });
+  
+  ourObject.trigger('dance', 'our event!');
+  
+  // It is recommended to namespace the event names
+  // 'on', 'off' and 'trigger' are methods for listening/stop listening to events and invoking events respectively.
+  
+  ourObject.on('dance:tap', function(msg) { console.log('dance tap: ' + msg); });
+  ourObject.on('dance:break', function(msg) { console.log('dance break: ' + msg); });
+  
+  // 'all' listens to all the events triggered
+  ourObject.on('all', function(eventname) { console.log('Event: ' + eventname); });
+  
+  ourObject.trigger('dance:tap', 'Dance tapped!');
+  ourObject.trigger('dance:break', 'Dance break!');
+
+  // Stops listening to an event
+  ourObject.off('dance:tap');
+  ourObject.off('all');
+  
+  ourObject.trigger('dance:tap', 'Dance tapped!');
+  ourObject.trigger('dance:break', 'Dance break!');
+  
+  // Mutliple events can be triggered at a time and multiple arguments can be passed to the handlers.
+  ourObject.on('dance:tap', function(msg) { console.log('dance tap: ' + msg); });
+  ourObject.trigger('dance:tap dance:break', 'Too much tired of dancing!');
+  
+  console.log("-------------------- listenTo() and stopListening() --------------------------");
+  
+  // 'on' and 'off' add callbacks to an observed object. But, 'listenTo' and 'stopListening' listens for events happening on other objects.
+  
+  var a = _.extend({}, Backbone.Events);
+  var b = _.extend({}, Backbone.Events);
+  var c = _.extend({}, Backbone.Events);
+  
+  a.listenTo(b, 'anything', function(event) { console.log('anything happened!'); });
+  a.listenTo(c, 'everything', function(event) { console.log('everything happened!'); });
+  
+  b.trigger('anything');
+  
+  a.stopListening();
+  
+  b.trigger('anything');
+  c.trigger('everything');
+  
+</script>
+</body>
+</html>
