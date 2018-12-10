@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BackboneJS - Model</title>
+</head>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="http://backbonejs.org/backbone-min.js"></script>
+<script>
+  // Your code goes here
+  // Models, Views, Collections, routers and events
+  // Backbone Collection - Set of models created by extending Backbone.Collection.
+  
+  var Todo = Backbone.Model.extend({  
+	defaults: {
+		title: '',
+		completed: false
+	}  
+  });
+  
+  var todo1 = new Todo({
+	title: 'first todo item',
+	completed: false
+  });
+  
+  var todo2 = new Todo({
+	title: 'second todo item',
+	completed: false
+  });
+  
+  var TodoCollection = Backbone.Collection.extend({
+	model: Todo
+  });
+  
+  var todos = new TodoCollection([todo1, todo2]);
+  console.log("todos collection size: " + todos.length);
+  
+  var todo3 = new Todo({ title: 'third todo item', completed: false });
+  todos.add(todo3);  
+  console.log("After adding one more item - todos collections size: " + todos.length);
+  
+  todos.remove([todo1, todo2]);
+  console.log("After removing two items - todos collections size: " + todos.length);
+
+  todos.remove(todo3);
+  console.log("After removing one item - todos collections size: " + todos.length);
+  
+  console.log("--------------------------------- Merge: true ------------------------------------------------");
+  
+  // Passing {merge: true}, causes duplicate models to have their attributes merged into the existing models, instead of being ignored.
+  
+</script>
+</body>
+</html>

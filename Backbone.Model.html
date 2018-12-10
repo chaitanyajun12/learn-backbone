@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BackboneJS - Model</title>
+</head>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="http://backbonejs.org/backbone-min.js"></script>
+<script>
+  // Your code goes here
+  // Models, Views, Collections, routers and events
+  // Backbone Model - Contains the data for an application as well as logic around this data.
+  var Todo = Backbone.Model.extend({
+  
+	initialize : function() {
+		console.log("Todo model is initialized!");
+	},
+	
+	defaults : {
+		title : 'default',
+		completed : false
+	}
+	
+  });
+  
+  var todo1 = new Todo();
+  console.log(JSON.stringify(todo1));
+  console.log("GET title : " + todo1.get('title'));
+  console.log("GET completed : " + todo1.get('completed'));
+  
+  var todoAttributes = todo1.toJSON();
+  console.log("todoAttributes : (" + todoAttributes.title + ", " + todoAttributes.completed + ")");
+  
+  todo1.set('title', 'setting the title of todo item');
+  todo1.set('completed', true);
+  
+  console.log("GET title after set : " + todo1.get('title'));
+  console.log("GET completed after set : " + todo1.get('completed'));
+  
+  console.log("Model state : " + JSON.stringify(todo1.attributes));
+  
+  console.log("----------------------------------------------------------------------------------------");
+  
+  var todo2 = new Todo({
+	title : "Initializing an entire object",
+	completed : true,
+  });  
+  console.log(JSON.stringify(todo2));
+  
+  console.log("----------------------------------------------------------------------------------------");
+  
+  var todo3 = new Todo({
+	title : "Testing defaults will reflect or no!"
+  });  
+  console.log(JSON.stringify(todo3));
+  
+  console.log("--------------------------------- PERSON ------------------------------------------------");
+  
+  var Person = Backbone.Model.extend({
+	initialize : function() {
+		this.on('change', function() {
+			console.log("Person has changed dude!");
+		});		
+		
+		this.validate = function(attrs) {
+			if (!attrs.name) {
+				return 'I need your name!';
+			}
+		}
+		
+		this.on('invalid', function(model, error) {
+			console.log("Error: " + error);
+		});
+	}
+  });  
+  
+  var person = new Person();
+  person.on("change:name", function() {
+	console.log("Person:name changed!");
+  });
+
+  person.set('title', 'The Lanester!', {validate : true});
+  console.log(person.get('title'));  
+  
+  person.set({name: 'Advik'}, {'silent': true});
+  
+  console.log(person.hasChanged('name'));
+  console.log(person.hasChanged(null));
+  
+  var person2 = new Person();
+  person2.set('title', 'Adding title for person2', {validate : true});
+  
+  console.log(person2.get('title'));  
+  console.log(person2.validationError);
+  
+  var person3 = new Person(null, {validate : true});
+  console.log(person3.validationError);
+  
+</script>
+</body>
+</html>

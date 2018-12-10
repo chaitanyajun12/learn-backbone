@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BackboneJS - View</title>
+</head>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="http://backbonejs.org/backbone-min.js"></script>
+<script>
+  // Your code goes here
+  // Models, Views, Collections, routers and events
+  // Backbone View - Contains the logic behind the presentation of model's data to the user.
+  // The central property of a view is 'el'.
+  
+  console.log("----------------------------------- Backbone View ------------------------------------");
+  var TodoView = Backbone.View.extend({
+	
+	tagName : 'ul',
+	
+	className : 'container',
+	
+	id : 'todos'
+	
+  });
+
+  var todoView = new TodoView();
+  console.log(todoView.el);
+  console.log(todoView.$el);
+  console.log($(todoView.el))
+  
+  console.log("----------------------------------- setElement ------------------------------------");
+  
+  var View = Backbone.View.extend({  
+	events: {
+		click: function(e) {
+			console.log(view.el == e.target);
+		}
+	}	
+  });
+  
+  var button1 = $('<button></button>');
+  var button2 = $('<button></button>');
+  
+  var view = new View({el: button1});
+  button1.trigger('click');
+  
+  view.setElement(button2);  
+  console.log("After setElement...");
+  button1.trigger('click');
+  button2.trigger('click');
+  
+  console.log("Test...");
+  var test = $('<a>wow</a>');
+  view.setElement(test);  
+  test.trigger('click');
+  console.log(view.$el[0].innerHTML);
+  
+  console.log("----------------------------------- render ------------------------------------");
+  
+  // Its good to always return this object after the render method is called.
+  // Template engine compiles Javascript templates to functions which can be evaluated for rendering.
+  // The function returned from the template engine is passed the model attributes to return the html markup which is assigned 
+  // to el using $el property.
+  
+  console.log("------------------------------------ events -----------------------------------");
+  
+  // Event hash is a key value pair, which are represented as 'eventName selector' : <callbackfunc>.
+  // We can as well bind method yourself using _.bind(this.viewEvent, this)
+  // this.model.bind('change', _.bind(this.render, this)); Renders the view whenever the associated model changes.  
+  
+</script>
+</body>
+</html>
