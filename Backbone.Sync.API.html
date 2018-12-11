@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BackboneJS - Sync API</title>
+</head>
+<body>
+
+<div id="todo">
+	<input type=checkbox />
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://underscorejs.org/underscore-min.js"></script>
+<script src="http://backbonejs.org/backbone-min.js"></script>
+<script>
+  // Backbone.sync API is called every time Backbone tries to perform CRUD operations.
+  // It uses jquery or Zepto $.ajax() implementations to make these RESTful requests.
+  var ajaxSettings;
+  
+  $.ajax = function(ajaxRequest) {
+	ajaxSettings = ajaxRequest;
+  }
+  
+  var Library = Backbone.Collection.extend({
+	url: function() { return '/library'; }
+  });
+	
+  var attrs = {
+	title: 'SpaceX Journey',
+	author: 'Elon Musk',
+	pages: 356
+  };
+	
+  var library = new Library;
+  library.create(attrs, {wait: false});
+  
+  console.log(ajaxSettings);
+  console.log(ajaxSettings.data);
+  
+  // Example showing supporting legacy servers.
+  // emulateHTTP: true, implies that server does not support HTTP PUT and HTTP DELETE.
+  // emulateJSON: true, implies that application/json Content-Type is not supported.
+  library.first().save({id: 'grodon-brown', author: 'Davinci Code'}, {
+	emulateHTTP: true,
+	emulateJSON: true
+  });
+  
+  console.log(ajaxSettings);
+  console.log(ajaxSettings.data);
+  
+</script>
+</body>
+</html>
