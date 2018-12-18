@@ -27,14 +27,14 @@ app.AppView = Backbone.View.extend({
     },
 
     render: function() {
-        var completed = app.Todos.completed().length;
+        var completed = ''; //app.Todos.completed().length;
         var remaining = ''; //app.Todos.remaining().length;
 
         if (app.Todos.length) {
             this.$main.show();
             this.$footer.show();
 
-            this.$footer.html(this.$statsTemplate({
+            this.$footer.html(this.statsTemplate({
                 'completed': completed,
                 'remaining': remaining
             }));
@@ -48,7 +48,7 @@ app.AppView = Backbone.View.extend({
     },
 
     addOne: function(todo) {
-        var view = new TodoView({model: todo});
+        var view = new app.TodoView({model: todo});
         $("#todo-list").append(view.render().el);
     },
 
@@ -66,7 +66,7 @@ app.AppView = Backbone.View.extend({
     },
 
     createOnEnter: function() {
-        if (event.which !== 13 || this.$input.val().trim()) {
+        if (event.which !== 13 || !this.$input.val().trim()) {
             return;
         }
         
