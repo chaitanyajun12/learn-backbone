@@ -8,7 +8,9 @@ app.TodoView = Backbone.View.extend({
     events: {
         'dblclick label': 'edit',
         'keypress .edit': 'updateOnEnter',
-        'blur .edit': 'updateTitleOnFocusLost'
+        'blur .edit': 'updateTitleOnFocusLost',
+        'click .destroy': 'deleteTodoItem',
+        'click .toggle': 'toggleTodoCompletion'
     },
 
     initialize: function() {
@@ -29,7 +31,7 @@ app.TodoView = Backbone.View.extend({
     updateTitleOnFocusLost: function() {
         var value = this.$input.val().trim();
         if(value) {
-            this.model.save({ 'model': value });
+            this.model.save({ 'title': value });
         }
         this.$el.removeClass('editing');
     },
@@ -38,8 +40,15 @@ app.TodoView = Backbone.View.extend({
         if (event.which == 13) {
             this.updateTitleOnFocusLost();
         }
+    },
+
+    deleteTodoItem: function() {
+        this.model.destroy();
+    },
+
+    toggleTodoCompletion: function(event) {
+        var isChecked = $(event.target).is(':checked');
+        this.model.save({ 'completed': isChecked });        
     }
-
-
 
 });

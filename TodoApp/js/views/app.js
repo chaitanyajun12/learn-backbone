@@ -19,16 +19,18 @@ app.AppView = Backbone.View.extend({
         this.$main = this.$("#main");
 
         this.listenTo(app.Todos, 'add', this.addOne);
+        this.listenTo(app.Todos, 'remove', this.removeTodo);
         this.listenTo(app.Todos, 'reset', this.addAll);
+        //this.listenTo(app.Todos, 'change:completed', );
 
         this.listenTo(app.Todos, 'all', this.render);
 
-        app.Todos.fetch();
+        app.Todos.fetch();        
     },
 
     render: function() {
-        var completed = ''; //app.Todos.completed().length;
-        var remaining = ''; //app.Todos.remaining().length;
+        var completed = app.Todos.completed().length;
+        var remaining = app.Todos.remaining().length;
 
         if (app.Todos.length) {
             this.$main.show();
@@ -49,12 +51,17 @@ app.AppView = Backbone.View.extend({
 
     addOne: function(todo) {
         var view = new app.TodoView({model: todo});
-        $("#todo-list").append(view.render().el);
+        $("#todo-list").append(view.render().el);        
     },
 
     addAll: function() {
         this.$("#todo-list").html('');
         this.app.Todos.each(this.addOne, this);
+    },
+
+    removeTodo: function() {
+        this.$("#todo-list").html('');
+        app.Todos.each(this.addOne, this);
     },
 
     newAttributes: function() {

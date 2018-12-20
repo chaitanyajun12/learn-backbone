@@ -6,13 +6,15 @@ app.TodosList = Backbone.Collection.extend({
     localStorage: new Backbone.LocalStorage('todos-backbone'),
 
     completed: function() {
-        /* return this.filter(function() {
-            return this.get('completed');
-        }); */ 
+        return app.Todos.models.filter(function(model) { 
+            return model.get('completed'); 
+        });
     },
 
     remaining: function() {
-        
+        return app.Todos.models.filter(function(model) { 
+            return !model.get('completed'); 
+        });
     },
 
     comparator: function() {
