@@ -15,6 +15,7 @@ app.TodoView = Backbone.View.extend({
 
     initialize: function() {
         this.listenTo(this.model, 'change', this.render);
+        this.listenTo(this.model, 'remove', this.remove);
     },
 
     render: function() {
@@ -47,8 +48,7 @@ app.TodoView = Backbone.View.extend({
     },
 
     toggleTodoCompletion: function(event) {
-        var isChecked = $(event.target).is(':checked');
-        this.model.save({ 'completed': isChecked });        
+        this.model.toggle();
     }
 
 });
