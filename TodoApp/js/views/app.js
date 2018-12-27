@@ -20,6 +20,7 @@ app.AppView = Backbone.View.extend({
 
         this.listenTo(app.Todos, 'add', this.addOne);
         this.listenTo(app.Todos, 'reset', this.addAll);
+        this.listenTo(app.Todos, 'filter', this.filterAll);
         // this.listenTo(app.Todos, 'change:completed', );
 
         this.listenTo(app.Todos, 'all', this.render);
@@ -46,6 +47,10 @@ app.AppView = Backbone.View.extend({
         }
 
         this.allCheckbox.checked = !remaining;
+    },
+
+    filterAll: function() {
+        console.log("filterAll: " + app.TodoFilter);
     },
 
     addOne: function(todo) {
