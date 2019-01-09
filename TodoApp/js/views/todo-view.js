@@ -16,6 +16,7 @@ app.TodoView = Backbone.View.extend({
     initialize: function() {
         this.listenTo(this.model, 'change', this.render);
         this.listenTo(this.model, 'remove', this.remove);
+        this.listenTo(this.model, 'visibility', this.toggleVisiblility());
     },
 
     render: function() {
@@ -41,6 +42,14 @@ app.TodoView = Backbone.View.extend({
         if (event.which == 13) {
             this.updateTitleOnFocusLost();
         }
+    },
+
+    toggleVisiblility: function() {
+        this.$el.toggleClass('hidden', this.isHidden());
+    },
+
+    isHidden: function() {
+        let isCompleted = this.model.get('completed');
     },
 
     deleteTodoItem: function() {

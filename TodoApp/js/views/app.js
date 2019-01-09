@@ -49,8 +49,13 @@ app.AppView = Backbone.View.extend({
         this.allCheckbox.checked = !remaining;
     },
 
+    filterOne: function(todo) {
+        todo.trigger('visibility');
+    },
+
     filterAll: function() {
         console.log("filterAll: " + app.TodoFilter);
+        app.Todos.each(this.filterOne, this);
     },
 
     addOne: function(todo) {
